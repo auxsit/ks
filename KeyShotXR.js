@@ -32,18 +32,18 @@ r[d].options&&(r[d].options.fontSize&&(b.style.fontSize=r[d].options.fontSize),r
     2*Math.PI,h=h/e.j,h=h*Math.PI,b=Math.sin(c),c=Math.cos(c),h=Math.cos(h),g=Math.sqrt(b*b+c*c+h*h);a.Ea[f]={Za:{x:b/g,y:c/g,$a:h/g}};a.oa++}};this.Ga=function(){for(var b=e.ra,f=e.sa,c=2,h=parseFloat(e.c/c),g=parseFloat(e.j/c),i=e.q,j=0,k=0,m=0,n=0,l=0;a.P<i;){var q=parseInt(b%e.c),s=parseInt(f%e.j),l=parseInt(s*e.c+q);a.D[l]||(a.C[a.P]=l,a.P++,a.D[l]=a.va(q,s),void 0!==r&&r[s+"_"+q]&&(a.ia[l]=s+"_"+q));0==j&&(b+=h,k++);1==j&&(f+=g,m++);n++;if(n>=c)if(n=0,0==j)j=1,k=0;else if(1==j&&(b+=h,k++,k>=c/2)){c*=
     2;b=e.ra;f=e.sa;h=parseFloat(e.c/c);g=parseFloat(e.j/c);if(1>h&&1>g){for(b=0;b<i;b++)f=parseInt(b%e.c),c=parseInt(b/e.c),l=parseInt(c*e.c+f),a.D[l]||(a.C[a.P]=l,a.P++,a.D[l]=a.va(f,c),void 0!==r&&r[c+"_"+f]&&(a.ia[l]=c+"_"+f));break}j=m=k=0}}};
 
-    this.va=function(b,f){return A+a.s+"/"+parseInt(f)+"_"+parseInt(b)+"."+Ea};
-    // this.va = function (u, v) {
-    //     // 检查 folderName 是否为绝对路径
-    //     const isAbsolutePath = this.s.startsWith("http://") || this.s.startsWith("https://");
-    //
-    //     // 如果是绝对路径，直接拼接；否则基于当前页面路径拼接
-    //     if (isAbsolutePath) {
-    //         return `${this.s}${v}_${u}.${Ea}`;
-    //     } else {
-    //         return `${A}${this.s}/${v}_${u}.${Ea}`;
-    //     }
-    // };
+    // this.va=function(b,f){return A+a.s+"/"+parseInt(f)+"_"+parseInt(b)+"."+Ea};
+    this.va = function (u, v) {
+        // 检查 folderName 是否为绝对路径
+        const isAbsolutePath = this.s.startsWith("http://") || this.s.startsWith("https://");
+
+        // 如果是绝对路径，直接拼接；否则基于当前页面路径拼接
+        if (isAbsolutePath) {
+            return `${this.s}${v}_${u}.${Ea}`;
+        } else {
+            return `${A}${this.s}/${v}_${u}.${Ea}`;
+        }
+    };
 
     this.na=function(b,f){var b=b*(1<e.c?a.Xa:0),f=f*(1<e.j?a.Ya:0),c=Math.sqrt(b*b+f*f);if(1E-4<c&&(e.ea+=b,e.fa+=f,e.A+=c,1<e.A)){var c=parseInt(e.A),h=Math.atan2(e.ea,e.fa);e.A-=c;e.ea=
     0;e.fa=0;0>h&&(h+=2*Math.PI);h+=Math.PI/8;h=parseInt(h/(Math.PI/4));0>h&&(h+=8);h%=8;if(0!=x[h]){if(Ha)var g=e.I,g=g-c*x[h];else g=e.I,g+=c*x[h];if(e.Da){for(;0>g;)g+=e.c;for(;g>=e.c;)g-=e.c}else g>=e.c&&(g=e.c-1),0>g&&(g=0);e.I!=g&&(e.I=g,e.J=p)}if(0!=y[h]){Ia?(g=e.K,g-=c*y[h]):(g=e.K,g+=c*y[h]);if(e.Fa){for(;0>g;)g+=e.j;for(;g>=e.j;)g-=e.j}else g>=e.j&&(g=e.j-1),0>g&&(g=0);e.K!=g&&(e.K=g,e.J=p)}}};this.Wa=function(){a.v(!a.i);a.i?a.H.setAttribute("src",A+a.s+"/files/GoFullScreenIcon.png"):a.H.setAttribute("src",
