@@ -1,14 +1,14 @@
+// Sam design
+
 (function (global) {
     "use strict";
-
-    // Constructor
+    
     function JobobikeXR(containerId, config) {
         if (!document.getElementById(containerId)) {
             console.error("Container not found: " + containerId);
             return;
         }
 
-        // Configuration and Defaults
         this.containerId = containerId;
         this.folderPath = config.folderPath || "./";
         this.viewPortWidth = config.viewPortWidth || 1200;
@@ -28,11 +28,9 @@
         this.init();
     }
 
-    // Initialization
     JobobikeXR.prototype.init = function () {
         const container = document.getElementById(this.containerId);
 
-        // Create Canvas for rendering
         this.canvas = document.createElement("canvas");
         this.canvas.width = this.viewPortWidth;
         this.canvas.height = this.viewPortHeight;
@@ -41,31 +39,36 @@
 
         this.ctx = this.canvas.getContext("2d");
 
-        // Preload images
         this.preloadImages();
-
-        // Event listeners for interaction
         this.addEventListeners();
+
+        // Initial rendering
+        this.renderImage();
     };
 
-    // Preload Images
     JobobikeXR.prototype.preloadImages = function () {
         const totalImages = this.uCount * this.vCount;
+        let loadedImages = 0;
+
         for (let v = 0; v < this.vCount; v++) {
             for (let u = 0; u < this.uCount; u++) {
                 const img = new Image();
                 img.src = this.getImagePath(u, v);
+                img.onload = () => {
+                    loadedImages++;
+                    if (loadedImages === totalImages) {
+                        this.renderImage();
+                    }
+                };
                 this.images.push(img);
             }
         }
     };
 
-    // Get Image Path
     JobobikeXR.prototype.getImagePath = function (u, v) {
         return `${this.folderPath}${v}_${u}.${this.imageExtension}`;
     };
 
-    // Render Image
     JobobikeXR.prototype.renderImage = function () {
         const index = this.currentV * this.uCount + this.currentU;
         const img = this.images[index];
@@ -77,7 +80,6 @@
         }
     };
 
-    // Handle Mouse Drag
     JobobikeXR.prototype.handleDrag = function (deltaX, deltaY) {
         const uChange = Math.round(deltaX / (this.canvas.width / this.uCount));
         const vChange = Math.round(deltaY / (this.canvas.height / this.vCount));
@@ -88,7 +90,6 @@
         this.renderImage();
     };
 
-    // Add Event Listeners
     JobobikeXR.prototype.addEventListeners = function () {
         let isDragging = false;
         let lastX = 0;
@@ -120,32 +121,12 @@
             isDragging = false;
         });
 
-        // Touch events for mobile
-        this.canvas.addEventListener("touchstart", (e) => {
-            if (e.touches.length === 1) {
-                isDragging = true;
-                lastX = e.touches[0].clientX;
-                lastY = e.touches[0].clientY;
-            }
-        });
-
-        this.canvas.addEventListener("touchmove", (e) => {
-            if (isDragging && e.touches.length === 1) {
-                const deltaX = e.touches[0].clientX - lastX;
-                const deltaY = e.touches[0].clientY - lastY;
-
-                this.handleDrag(deltaX, deltaY);
-
-                lastX = e.touches[0].clientX;
-                lastY = e.touches[0].clientY;
-            }
-        });
-
-        this.canvas.addEventListener("touchend", () => {
-            isDragging = false;
-        });
+        if (this.allowFullscreen) {
+            this.canvas.addEventListener("dblclick", () => {
+                this.canvas.requestFullscreen();
+            });
+        }
     };
 
-    // Export to global
     global.JobobikeXR = JobobikeXR;
 })(window);
